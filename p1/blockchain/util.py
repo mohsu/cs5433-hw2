@@ -1,6 +1,7 @@
 import random
 import hashlib
 
+
 def sha256_2_string(string_to_hash):
     """ Returns the SHA256^2 hash of a given string input
     in hexadecimal format.
@@ -14,11 +15,12 @@ def sha256_2_string(string_to_hash):
 
     # (hint): feed binary data directly between the two SHA256 rounds
 
-    h1 = hashlib.sha256(string_to_hash).digest()
+    h1 = hashlib.sha256(string_to_hash.encode()).digest()
     h2 = hashlib.sha256(h1).hexdigest()
     return h2
 
-def encode_as_str(list_to_encode, sep = "|"):
+
+def encode_as_str(list_to_encode, sep="|"):
     """ Encodes a list as a string with given separator.
 
     Args:
@@ -27,6 +29,7 @@ def encode_as_str(list_to_encode, sep = "|"):
     """
     return sep.join([str(x) for x in list_to_encode])
 
+
 def nonempty_intersection(list1, list2):
     """ Returns true iff two lists have a nonempty intersection. """
     return len(list(set(list1) & set(list2))) > 0
@@ -34,6 +37,7 @@ def nonempty_intersection(list1, list2):
 
 def remove_empties(list):
     return [x for x in list if x != ""]
+
 
 def run_async(func):
     """
@@ -63,7 +67,7 @@ def run_async(func):
 
     @wraps(func)
     def async_func(*args, **kwargs):
-        func_hl = Thread(target = func, args = args, kwargs = kwargs)
+        func_hl = Thread(target=func, args=args, kwargs=kwargs)
         func_hl.start()
         return func_hl
 
