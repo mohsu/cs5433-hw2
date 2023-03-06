@@ -1,4 +1,5 @@
 import random
+import hashlib
 
 def sha256_2_string(string_to_hash):
     """ Returns the SHA256^2 hash of a given string input
@@ -13,8 +14,9 @@ def sha256_2_string(string_to_hash):
 
     # (hint): feed binary data directly between the two SHA256 rounds
 
-    # Placeholder for (1a)
-    return "deadbeef" + hex(int(random.random() * 10000000))[2:]
+    h1 = hashlib.sha256(string_to_hash).digest()
+    h2 = hashlib.sha256(h1).hexdigest()
+    return h2
 
 def encode_as_str(list_to_encode, sep = "|"):
     """ Encodes a list as a string with given separator.
