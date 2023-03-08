@@ -2,7 +2,9 @@ import os
 import config
 import blockchain
 from blockchain.util import encode_as_str
-import transaction, persistent
+import transaction
+import persistent
+
 
 class Blockchain(persistent.Persistent):
 
@@ -52,9 +54,11 @@ class Blockchain(persistent.Persistent):
                 if not input_ref in self.blocks_spending_input:
                     self.blocks_spending_input[input_ref] = []
                 self.blocks_spending_input[input_ref].append(block.hash)
-        self._p_changed = True # Marked object as changed so changes get saved to ZODB.
+        # Marked object as changed so changes get saved to ZODB.
+        self._p_changed = True
         if save:
-            transaction.commit() # If we're going to save the block, commit the transaction.
+            # If we're going to save the block, commit the transaction.
+            transaction.commit()
         return True
 
     def get_heights_with_blocks(self):
@@ -88,11 +92,14 @@ class Blockchain(persistent.Persistent):
             (:obj:`list` of str): list of all blocks in the chain between desired block and genesis, in the descending order of height. 
         """
 
-        # (hint): you may find the is_genesis flag helpful in this method
-        # as well as the self.blocks data structure
-
-        # Placeholder for (1a)
-        return [block_hash]
+        chain = []
+        if self.blocks and block_hash in self.blocks:
+            current_block_hash = block_hash
+            while not self.blocks[current_block_hash].is_genesis:
+                chain.append(current_block_hash)
+                current_block_hash = self.blocks[current_block_hash].parent_hash
+            chain.append(current_block_hash)
+        return chain
 
     def get_all_block_weights(self):
         """ Get total weight for every block in the blockchain database.
@@ -132,4 +139,3 @@ class Blockchain(persistent.Persistent):
                 heaviest_weight = weight_in_block
 
         return heaviest_block
-
