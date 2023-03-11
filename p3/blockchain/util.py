@@ -1,5 +1,6 @@
 import binascii
 import ecdsa
+import hashlib
 from ecdsa import SigningKey, VerifyingKey
 
 def sha256_2_string(string_to_hash):
@@ -13,9 +14,11 @@ def sha256_2_string(string_to_hash):
         str: Output of double-SHA256 encoded as hexadecimal string.
     """
 
-    # Paste your answers to problem 1 here
-    
-    return "deadbeef"
+    # (hint): feed binary data directly between the two SHA256 rounds
+
+    h1 = hashlib.sha256(string_to_hash.encode()).digest()
+    h2 = hashlib.sha256(h1).hexdigest()
+    return h2
 
 def encode_as_str(list_to_encode, sep = "|"):
     """ Encodes a list as a string with given separator.

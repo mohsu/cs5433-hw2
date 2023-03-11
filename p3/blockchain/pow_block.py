@@ -20,14 +20,14 @@ class PoWBlock(Block):
             than the easiest possible block, with a target of 2^256.
             e.g. a block with weight 4 will take 4 times longer on expectation to mine than
             a block carrying target 2^256.
+            Target should be within the range [1, 2^256]. For targets out of this range, return 0.
 
         Returns:
-            int: The consensus weight of a block.
+            int: The consensus weight of a block, rounded to integer.
         """
-
-        # Paste your answers to problem 1 here
-        
-        return 1
+        if self.target < 1 or self.target > 2 ** 256:
+            return 0
+        return int(2 ** 256 / self.target)
 
     def mine(self):
         """ PoW mining loop; attempts to seal a block with new seal data until the seal is valid

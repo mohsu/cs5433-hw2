@@ -1,6 +1,8 @@
 from blockchain.block import Block
 from blockchain import util
 import config
+from ecdsa import SigningKey
+
 
 class PoABlock(Block):
     """ Extends Block, adding proof-of-work primitives. """
@@ -29,7 +31,16 @@ class PoABlock(Block):
             signature is valid, and returning.
         """
 
-        # Paste your answers to problem 1 here
+        # Use NIST192p curve and ECDSA, encoding block header as UTF-8
+        # use self.get_private_key() for key
+        # encode result as int and set using set_seal_data
+        # make sure to check that output is valid seal with provided code
+        # (if seal is invalid, repeat)
+
+        while not self.seal_is_valid():
+            pk = SigningKey.from_string(self.get_private_key())
+            signature = pk.sign(self.unsealed_header().encode())
+            self.set_seal_data(int.from_bytes(signature, 'big'))
 
     def calculate_appropriate_target(self):
         """ Target in PoA is currently meaningless """
