@@ -43,9 +43,9 @@ def gossip_message(type, message):
             message (str): Payload to deliver to destination to be processed based on type.
     """
     # (you should use send_message as a primitive; also see the config file)
-
-    # (placeholder for 3.1)
-    # implement here
+    for peer, dest in config.PEERS.items():
+        if config.node_id != peer:
+            send_message(dest, type, message)
 
 def handle_message(type, message, sender):
     """ Used to handle an incoming message sent by another node (heh-heh-heyyyy!).
