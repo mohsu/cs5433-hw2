@@ -49,8 +49,10 @@ class PoABlock(Block):
         # make sure to check that output is valid seal with provided code
         # (if seal is invalid, repeat)
 
-        # Placeholder for (1b)
-        return
+        while not self.seal_is_valid():
+            pk = SigningKey.from_string(self.get_private_key())
+            signature = pk.sign(self.unsealed_header().encode())
+            self.set_seal_data(int.from_bytes(signature, 'big'))
 
 
     def calculate_appropriate_target(self):
