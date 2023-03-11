@@ -26,8 +26,20 @@ class PoWBlock(Block):
             int: The consensus weight of a block, rounded to integer.
         """
 
-        # Placeholder for (1a)
-        return 1
+    def get_weight(self):
+        """ Gets the approximate total amount of work that has gone into making a block.
+            The consensus weight of a block is how much harder a block is to mine
+            than the easiest possible block, with a target of 2^256.
+            e.g. a block with weight 4 will take 4 times longer on expectation to mine than
+            a block carrying target 2^256.
+            Target should be within the range [1, 2^256]. For targets out of this range, return 0.
+
+        Returns:
+            int: The consensus weight of a block, rounded to integer.
+        """
+        if self.target < 1 or self.target > 2 ** 256:
+            return 0
+        return int(2 ** 256 / self.target)
 
     def mine(self):
         """ PoW mining loop; attempts to seal a block with new seal data until the seal is valid
